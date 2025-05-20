@@ -31,7 +31,6 @@ public class CategoryController {
         return ResponseEntity.ok("Insert category successfully");
     }
 
-    //Hiện tất cả các categories
     @GetMapping("")
     public ResponseEntity<List<Category>> getAllCategories(
             @RequestParam("page")     int page,

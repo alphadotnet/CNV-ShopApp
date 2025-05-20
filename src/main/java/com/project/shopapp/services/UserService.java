@@ -35,11 +35,8 @@ public class UserService implements IUserService{
         Role role =roleRepository.findById(userDTO.getRoleId())
                 .orElseThrow(() -> new DataNotFoundException("Role not found"));
         newUser.setRole(role);
-        // Kiểm tra nếu có accountId, không yêu cầu password
         if (userDTO.getFacebookAccountId() == 0 && userDTO.getGoogleAccountId() == 0) {
             String password = userDTO.getPassword();
-            //String encodedPassword = passwordEncoder.encode(password);
-            //newUser.setPassword(encodedPassword);
         }
         return userRepository.save(newUser);
     }
