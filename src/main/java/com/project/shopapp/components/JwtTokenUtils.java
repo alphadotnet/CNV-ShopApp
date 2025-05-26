@@ -19,24 +19,29 @@ import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenUtil {
+public class JwtTokenUtils {
     @Value("${jwt.expiration}")
-    private int expiration;
+    private int expiration; //save to an environment variable
     @Value("${jwt.secretKey}")
     private String secretKey;
     public String generateToken(com.project.shopapp.models.User user) throws Exception{
+        //properties => claims
         Map<String, Object> claims = new HashMap<>();
+        //this.generateSecretKey();
         claims.put("phoneNumber", user.getPhoneNumber());
+        claims.put("userId", user.getId());
         try {
             String token = Jwts.builder()
-                    .setClaims(claims)
+                    .setClaims(claims) //how to extract claims from this ?
                     .setSubject(user.getPhoneNumber())
                     .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
                     .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                     .compact();
             return token;
         }catch (Exception e) {
+            //you can "inject" Logger, instead System.out.println
             throw new InvalidParamException("Cannot create jwt token, error: "+e.getMessage());
+            //return null;
         }
     }
     private Key getSignInKey() {
@@ -48,7 +53,8 @@ public class JwtTokenUtil {
         SecureRandom random = new SecureRandom();
         byte[] keyBytes = new byte[32]; // 256-bit key
         random.nextBytes(keyBytes);
-        return Encoders.BASE64.encode(keyBytes);
+        String secretKey = Encoders.BASE64.encode(keyBytes);
+        return secretKey;
     }
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()

@@ -1,5 +1,6 @@
 package com.project.shopapp.configurations;
 
+import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserRepository userRepository;
