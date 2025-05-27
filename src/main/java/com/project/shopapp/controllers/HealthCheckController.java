@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @RestController
 @RequestMapping("${api.prefix}/healthcheck")
@@ -21,7 +23,9 @@ public class HealthCheckController {
         // Perform additional health checks here
         try {
             List<Category> categories = categoryService.getAllCategories();
-            return ResponseEntity.ok("ok");
+            // Get the computer name
+            String computerName = InetAddress.getLocalHost().getHostName();
+            return ResponseEntity.ok("ok, Computer Name: " + computerName);            
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("failed");
         }

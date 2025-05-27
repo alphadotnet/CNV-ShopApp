@@ -58,7 +58,6 @@ public class ProductService implements IProductService{
         return productRepository.findProductsByIds(productIds);
     }
 
-
     @Override
     public Page<ProductResponse> getAllProducts(String keyword,
                                                 Long categoryId, PageRequest pageRequest) {
@@ -83,11 +82,22 @@ public class ProductService implements IProductService{
                     .orElseThrow(() ->
                             new DataNotFoundException(
                                     "Cannot find category with id: "+productDTO.getCategoryId()));
-            existingProduct.setName(productDTO.getName());
+            if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
+                existingProduct.setName(productDTO.getName());
+            }
+
             existingProduct.setCategory(existingCategory);
-            existingProduct.setPrice(productDTO.getPrice());
-            existingProduct.setDescription(productDTO.getDescription());
-            existingProduct.setThumbnail(productDTO.getThumbnail());
+            if(productDTO.getPrice() >= 0) {
+                existingProduct.setPrice(productDTO.getPrice());
+            }
+            if(productDTO.getDescription() != null &&
+                    !productDTO.getDescription().isEmpty()) {
+                existingProduct.setDescription(productDTO.getDescription());
+            }
+            if(productDTO.getThumbnail() != null &&
+                    !productDTO.getThumbnail().isEmpty()) {
+                existingProduct.setDescription(productDTO.getThumbnail());
+            }
             return productRepository.save(existingProduct);
         }
         return null;
