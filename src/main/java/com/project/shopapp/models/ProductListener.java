@@ -1,7 +1,6 @@
 package com.project.shopapp.models;
 
-import com.project.shopapp.controllers.ProductController;
-import com.project.shopapp.services.IProductRedisService;
+import com.project.shopapp.services.product.IProductRedisService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
