@@ -1,11 +1,11 @@
 package com.project.shopapp.components;
-
+import com.project.shopapp.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.project.shopapp.exceptions.InvalidParamException;
 import com.project.shopapp.models.Token;
 import com.project.shopapp.repositories.TokenRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.security.SecureRandom;
+import java.security.SignatureException;
 import java.util.*;
 import java.util.function.Function;
 
@@ -25,9 +26,13 @@ import java.util.function.Function;
 public class JwtTokenUtils {
     @Value("${jwt.expiration}")
     private int expiration; //save to an environment variable
-    @Value("${jwt.secretKey}")
 
+    @Value("${jwt.expiration-refresh-token}")
+    private int expirationRefreshToken;
+
+    @Value("${jwt.secretKey}")
     private String secretKey;
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtils.class);
     private final TokenRepository tokenRepository;
     public String generateToken(com.project.shopapp.models.User user) throws Exception{
         //properties => claims
@@ -80,13 +85,28 @@ public class JwtTokenUtils {
     public String extractPhoneNumber(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String phoneNumber = extractPhoneNumber(token);
-        Token existingToken = tokenRepository.findByToken(token);
-        if(existingToken == null || existingToken.isRevoked() == true) {
-            return false;
+    public boolean validateToken(String token, User userDetails) {
+        try {
+            String phoneNumber = extractPhoneNumber(token);
+            Token existingToken = tokenRepository.findByToken(token);
+            if(existingToken == null ||
+                    existingToken.isRevoked() == true ||
+                    !userDetails.isActive()
+            ) {
+                return false;
+            }
+            return (phoneNumber.equals(userDetails.getUsername()))
+                    && !isTokenExpired(token);
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
         }
-        return (phoneNumber.equals(userDetails.getUsername()))
-                && !isTokenExpired(token);
+
+        return false;
     }
 }
