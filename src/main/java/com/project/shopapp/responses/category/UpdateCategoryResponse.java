@@ -1,18 +1,13 @@
-package com.project.shopapp.responses;
+package com.project.shopapp.responses.category;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.models.User;
 import lombok.*;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterResponse {
+public class UpdateCategoryResponse {
     @JsonProperty("message")
     private String message;
-
-    @JsonProperty("user")
-    private User user;
 }

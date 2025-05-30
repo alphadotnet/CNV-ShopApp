@@ -1,4 +1,4 @@
-package com.project.shopapp.responses;
+package com.project.shopapp.responses.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
-public class OrderListResponse {
-    private List<OrderResponse> orders;
+public class ProductListResponse {
+    private List<ProductResponse> products;
     private int totalPages;
 }

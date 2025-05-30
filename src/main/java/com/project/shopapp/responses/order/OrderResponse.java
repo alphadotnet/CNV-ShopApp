@@ -1,13 +1,10 @@
-package com.project.shopapp.responses;
-import com.fasterxml.jackson.annotation.JsonFormat;
+package com.project.shopapp.responses.order;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.dtos.OrderDetailDTO;
 import com.project.shopapp.models.Order;
 import com.project.shopapp.models.OrderDetail;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Getter
