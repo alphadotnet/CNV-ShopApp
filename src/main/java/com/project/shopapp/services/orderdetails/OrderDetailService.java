@@ -60,7 +60,7 @@ public class OrderDetailService implements IOrderDetailService{
                 .orElseThrow(() -> new DataNotFoundException("Cannot find order with id: "+id));
         Product existingProduct = productRepository.findById(orderDetailDTO.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find product with id: " + orderDetailDTO.getProductId()));
+                        "Cannot find product with id: " + orderDetailDTO.getProductId() +"/n Please try again"));
         existingOrderDetail.setPrice(orderDetailDTO.getPrice());
         existingOrderDetail.setNumberOfProducts(orderDetailDTO.getNumberOfProducts());
         existingOrderDetail.setTotalMoney(orderDetailDTO.getTotalMoney());
