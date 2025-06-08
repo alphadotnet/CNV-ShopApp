@@ -66,7 +66,7 @@ public class CommentController {
                 return ResponseEntity.badRequest().body("You cannot comment as another user");
             }
             commentService.insertComment(commentDTO);
-            return ResponseEntity.ok("Insert comment successfully");
+            return ResponseEntity.ok("Insert comment successfully!!");
         } catch (Exception e) {
             // Handle and log the exception
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
