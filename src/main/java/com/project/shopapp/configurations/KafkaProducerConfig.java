@@ -10,11 +10,7 @@ import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
-/*
-Thông Báo và Gửi Email: Kafka có thể được sử dụng để gửi thông báo và email đến người dùng.
-Sau khi một đơn hàng được xử lý, bạn có thể gửi một thông điệp Kafka để thông báo cho người dùng về trạng thái đơn hàng
-và gửi email xác nhận
-* */
+
 @Configuration
 public class KafkaProducerConfig {
 
