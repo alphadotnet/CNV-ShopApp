@@ -54,7 +54,6 @@ public class ProductRedisService implements IProductRedisService{
     }
 
     @Override
-    //save to Redis
     public void saveAllProducts(List<ProductResponse> productResponses,
                                 String keyword,
                                 Long categoryId,
